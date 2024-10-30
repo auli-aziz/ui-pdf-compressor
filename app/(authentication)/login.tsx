@@ -7,18 +7,23 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CircleIcon, Loader2 } from 'lucide-react';
+import { redirect } from 'next/navigation';
 // import { signIn, signUp } from './actions';
-import { ActionState } from '@/lib/auth/middleware';
+// import { ActionState } from '@/lib/auth/middleware';
 
 export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect');
+  // const redirect = searchParams.get('redirect');
   const priceId = searchParams.get('priceId');
   const inviteId = searchParams.get('inviteId');
   // const [state, formAction, pending] = useActionState<ActionState, FormData>(
   //   mode === 'signin' ? signIn : signUp,
   //   { error: '' }
   // );
+
+  function handleClick() {
+    redirect('/captcha');
+  }
 
   return (
     <div className="min-h-[100dvh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
@@ -34,8 +39,8 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <form className="space-y-6" action={""}>
-          <input type="hidden" name="redirect" value={redirect || ''} />
+        <form className="space-y-6" action={handleClick}>
+          {/* <input type="hidden" name="redirect" value={redirect || ''} /> */}
           <input type="hidden" name="priceId" value={priceId || ''} />
           <input type="hidden" name="inviteId" value={inviteId || ''} />
           <div>
