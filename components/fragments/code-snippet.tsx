@@ -34,7 +34,7 @@ export default function CodeSnippet() {
         </div>
         <Button
           onClick={handleTestAPI}
-          className=" bg-gray-900 hover:bg-gray-800 text-white border border-gray-200 rounded-full flex items-center justify-center"
+          className="bg-orange-500 hover:bg-orange-600 text-white"
         >
           Test API
         </Button>

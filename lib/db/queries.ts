@@ -4,36 +4,23 @@ import { activityLogs, teamMembers, teams, users } from './schema';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/auth/session';
 
+let isAuthenticated = false;
+
 export async function getUser() {
-  const sessionCookie = (await cookies()).get('session');
-  if (!sessionCookie || !sessionCookie.value) {
-    return null;
+  // Return a mock user object if authenticated, otherwise return null
+  if (isAuthenticated) {
+    return {
+      id: 1,
+      email: 'mockuser@example.com',
+      role: 'user',
+    };
   }
+  return null;
+}
 
-  const sessionData = await verifyToken(sessionCookie.value);
-  if (
-    !sessionData ||
-    !sessionData.user ||
-    typeof sessionData.user.id !== 'number'
-  ) {
-    return null;
-  }
-
-  if (new Date(sessionData.expires) < new Date()) {
-    return null;
-  }
-
-  const user = await db
-    .select()
-    .from(users)
-    .where(and(eq(users.id, sessionData.user.id), isNull(users.deletedAt)))
-    .limit(1);
-
-  if (user.length === 0) {
-    return null;
-  }
-
-  return user[0];
+// Export function to modify authentication state (used for sign-in/out)
+export function setAuthenticationState(authState: boolean) {
+  isAuthenticated = authState;
 }
 
 export async function getTeamByStripeCustomerId(customerId: string) {

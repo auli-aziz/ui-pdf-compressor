@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/lib/auth";
-// import { signOut } from '@/app/(login)/actions';
+import { signOut } from '@/app/(authentication)/actions';
 import { useRouter } from "next/navigation";
 
 function Header() {
@@ -22,7 +22,7 @@ function Header() {
 
   async function handleSignOut() {
     setUser(null);
-    // await signOut();
+    await signOut();
     router.push("/");
   }
 
@@ -83,7 +83,7 @@ function Header() {
               asChild
               className="bg-black hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-full"
             >
-              <Link href="/sign-up">Sign Up</Link>
+              <Link href="/sign-in">Sign In</Link>
             </Button>
           )}
         </div>

@@ -2,6 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { getUser } from '@/lib/db/queries';
 
 interface CompressionData {
   originalSize: string;
@@ -10,6 +12,8 @@ interface CompressionData {
 }
 
 export default function TrialPage() {
+  const router = useRouter();
+  const [timesCompressed, setTimesCompressed] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [compressedFile, setCompressedFile] = useState<File | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
@@ -24,6 +28,14 @@ export default function TrialPage() {
   };
 
   const handleCompress = () => {
+    setTimesCompressed((prev) => prev + 1);
+
+    if(timesCompressed >= 5) {
+      alert('You have reached the maximum limit of compressions. Please subscribe to continue compressing.');
+      router.push('/pricing');
+      return;
+    }
+
     if (file) {
       setIsCompressing(true);
 

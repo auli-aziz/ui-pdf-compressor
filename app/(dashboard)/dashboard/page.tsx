@@ -4,11 +4,12 @@ import { RequestSection } from "@/components/fragments/request-details";
 import { CodePanel } from "@/components/fragments/code-panel";
 
 export default async function SettingsPage() {
-  const user = await getUser();
+  const user = getUser();
+    console.log("User", user);
 
-  // if (!user) {
-  //   redirect('/login');
-  // }
+  if (!user) {
+    redirect('/sign-in');
+  }
 
   return (
     <div className="flex h-full overflow-clip">
