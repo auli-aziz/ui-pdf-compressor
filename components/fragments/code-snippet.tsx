@@ -1,65 +1,53 @@
-import { CodeBlock, dracula } from "react-code-blocks";
-
-const codeSnippets = [
-  {
-    code: `package main
-
-import (
-  "fmt"
-  "net/http"
-  "io"
-)
-
-func main() {
-
-  url := "https://tesseract-compressor.p.rapidapi.com/api/compress/pdf"
-
-  req, _ := http.NewRequest("POST", url, nil)
-
-  req.Header.Add("x-rapidapi-key", "ae7e443102msh632ac49ed4b7ff3p12f5a7jsn6810e7c4ff35")
-  req.Header.Add("x-rapidapi-host", "tesseract-compressor.p.rapidapi.com")
-  req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-  res, _ := http.DefaultClient.Do(req)
-
-  defer res.Body.Close()
-  body, _ := io.ReadAll(res.Body)
-
-  fmt.Println(res)
-  fmt.Println(string(body))
-
-}`,
-    language: "go",
-  },
-  {
-    code: `CURL *hnd = curl_easy_init();
-
-curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
-curl_easy_setopt(hnd, CURLOPT_URL, "https://tesseract-compressor.p.rapidapi.com/api/compress/pdf");
-
-struct curl_slist *headers = NULL;
-headers = curl_slist_append(headers, "x-rapidapi-key: ae7e443102msh632ac49ed4b7ff3p12f5a7jsn6810e7c4ff35");
-headers = curl_slist_append(headers, "x-rapidapi-host: tesseract-compressor.p.rapidapi.com");
-headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
-curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);
-
-CURLcode ret = curl_easy_perform(hnd);`,
-    language: "c",
-  },
-];
+import { useState } from "react";
+import { CopyBlock, dracula } from "react-code-blocks";
+import { Button } from "@/components/ui/button";
+import { codeSnippets } from "@/lib/data/codes";
 
 export default function CodeSnippet() {
+  const [languageIdx, setLanguageIdx] = useState<number>(0);
+
+  function handleTestAPI() {
+    alert("Testing API...");
+  }
   return (
-    <div>
-      {codeSnippets.map((snippet, index) => (
-        <CodeBlock
-          key={index}
-          text={snippet.code}
-          language={snippet.language}
-          showLineNumbers={true}
+    <div className="break-words h-full overflow-hidden">
+      <div className="w-full py-3 px-5 flex justify-between items-center">
+        <div className="gap-2">
+          <label htmlFor="code">Language: </label>
+          <select
+            name="code"
+            className="border-2"
+            onChange={(e) => setLanguageIdx(Number(e.target.value))}
+          >
+            <option value="0">Go</option>
+            <option value="1">C</option>
+            <option value="2">C#</option>
+            <option value="3">HTTP</option>
+            <option value="4">Java</option>
+            <option value="5">Kotlin</option>
+            <option value="6">JavaScript</option>
+            <option value="7">PHP</option>
+            <option value="8">Node.js</option>
+            <option value="9">Python</option>
+            <option value="10">Shell</option>
+          </select>
+        </div>
+        <Button
+          onClick={handleTestAPI}
+          className=" bg-gray-900 hover:bg-gray-800 text-white border border-gray-200 rounded-full flex items-center justify-center"
+        >
+          Test API
+        </Button>
+      </div>
+      <div className="bg-[#282A36] h-full">
+        <CopyBlock
+          text={codeSnippets[languageIdx].code}
+          language={codeSnippets[languageIdx].language}
+          showLineNumbers={false}
           theme={dracula}
+          wrapLongLines={true}
         />
-      ))}
+      </div>
     </div>
   );
 }

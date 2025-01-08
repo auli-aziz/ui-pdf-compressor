@@ -10,10 +10,8 @@ export default async function SettingsPage() {
   //   redirect('/login');
   // }
 
-  let active = "";
-
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-full overflow-clip">
       <RequestSection />
       <CodePanel />
     </div>
