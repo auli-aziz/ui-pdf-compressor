@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "db:setup": "npx tsx lib/db/setup.ts",
@@ -33,6 +33,8 @@
     "jose": "^5.9.2",
     "lucide-react": "^0.441.0",
     "next": "15.0.0-canary.190",
+    "next-auth": "^4.24.11",
+    "nodemailer": "^6.9.16",
     "postcss": "^8.4.47",
     "postgres": "^3.4.4",
     "react": "19.0.0-rc-cd22717c-20241013",

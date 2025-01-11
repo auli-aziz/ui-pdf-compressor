@@ -12,8 +12,7 @@ export default function PinVerificationPage() {
     // Verify PIN against the backend here
     const isValid = true;
     if (isValid) {
-      console.log('PIN is valid');
-      redirect('/payment/success'); // Adjust this route as necessary
+      redirect('/payment/success');
     } else {
       alert('Invalid PIN. Please try again.');
     }

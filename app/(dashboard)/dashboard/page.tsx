@@ -5,7 +5,6 @@ import { CodePanel } from "@/components/fragments/code-panel";
 
 export default async function SettingsPage() {
   const user = getUser();
-    console.log("User", user);
 
   if (!user) {
     redirect('/sign-in');
