@@ -1,25 +1,22 @@
-'use client';
-
-import { startTransition, useActionState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
-import { useUser } from '@/lib/auth';
-// import { updateAccount } from '@/app/(login)/actions';
+import { startTransition, useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { signOut } from 'next-auth/react';
+import { Loader2 } from "lucide-react";
+import { useUser } from "@/lib/auth";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { authConfig } from "@/lib/auth/auth";
+import { getServerSession } from "next-auth";
+import { SignOutButton } from "@/components/ui/auth-button";
 
 type ActionState = {
   error?: string;
   success?: string;
 };
 
-export default function GeneralPage() {
-  const { user } = useUser();
-  // const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-  //   updateAccount,
-  //   { error: '', success: '' }
-  // );
+export default async function GeneralPage() {
+  const session = await getServerSession(authConfig);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -40,41 +37,39 @@ export default function GeneralPage() {
       <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
         General Settings
       </h1>
-
       <Card>
         <CardHeader>
           <CardTitle>Account Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                name="name"
-                placeholder="Enter your name"
-                defaultValue={user?.name || ''}
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                defaultValue={user?.email || ''}
-                required
-              />
-            </div>
-            {/* {state.error && (
+          <div>
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+              defaultValue={session?.user?.name as string}
+              disabled
+            />
+          </div>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              defaultValue={session?.user?.email as string}
+              disabled
+            />
+          </div>
+          {/* {state.error && (
               <p className="text-red-500 text-sm">{state.error}</p>
             )}
             {state.success && (
               <p className="text-green-500 text-sm">{state.success}</p>
             )} */}
-            <Button
+          {/* <Button
               type="submit"
               className="bg-orange-500 hover:bg-orange-600 text-white"
               disabled={false}
@@ -88,7 +83,8 @@ export default function GeneralPage() {
                 'Save Changes'
               )}
             </Button>
-          </form>
+          </form> */}
+          <SignOutButton />
         </CardContent>
       </Card>
     </section>

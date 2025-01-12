@@ -9,14 +9,14 @@ import { Label } from '@/components/ui/label';
 import { CircleIcon, Loader2 } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { signIn, signUp } from './actions';
-import { ActionState } from '@/lib/auth/middleware';
+import { GoogleSignInButton } from '@/components/ui/auth-button';
 
 export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
   const searchParams = useSearchParams();
   // const redirect = searchParams.get('redirect');
   const priceId = searchParams.get('priceId');
   const inviteId = searchParams.get('inviteId');
-  const [state, formAction, pending] = useActionState<ActionState, FormData>(
+  const [state, formAction, pending] = useActionState<FormData>(
     mode === 'signin' ? signIn : signUp,
     { error: '' }
   );
@@ -85,9 +85,9 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
             </div>
           </div>
 
-          {state?.error && (
+          {/* {state?.error && (
             <div className="text-red-500 text-sm">{state.error}</div>
-          )}
+          )} */}
 
           <div>
             <Button
@@ -128,13 +128,15 @@ export function Login({ mode = 'signin' }: { mode?: 'signin' | 'signup' }) {
               href={`${mode === 'signin' ? '/sign-up' : '/sign-in'}${
                 redirect ? `?redirect=${redirect}` : ''
               }${priceId ? `&priceId=${priceId}` : ''}`}
-              className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-full shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+              className="mb-3 w-full flex justify-center py-2 px-4 border border-gray-300 rounded-full shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
             >
               {mode === 'signin'
                 ? 'Create an account'
                 : 'Sign in to existing account'}
             </Link>
           </div>
+
+          <GoogleSignInButton />
         </div>
       </div>
     </div>
