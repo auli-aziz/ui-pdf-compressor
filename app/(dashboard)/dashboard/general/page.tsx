@@ -1,19 +1,14 @@
 import { startTransition, useActionState } from "react";
 import { Button } from "@/components/ui/button";
-import { signOut } from 'next-auth/react';
+import { signOut } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@/lib/auth";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { authConfig } from "@/lib/auth/auth";
+import { authConfig } from "@/lib/auth/config";
 import { getServerSession } from "next-auth";
 import { SignOutButton } from "@/components/ui/auth-button";
-
-type ActionState = {
-  error?: string;
-  success?: string;
-};
 
 export default async function GeneralPage() {
   const session = await getServerSession(authConfig);
@@ -84,7 +79,9 @@ export default async function GeneralPage() {
               )}
             </Button>
           </form> */}
-          <SignOutButton />
+          <div className="mt-5 bg-orange-500 w-fit rounded-lg">
+            <SignOutButton />
+          </div>
         </CardContent>
       </Card>
     </section>

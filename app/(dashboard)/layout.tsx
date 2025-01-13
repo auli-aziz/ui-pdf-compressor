@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CircleIcon, Home, LogOut, Facebook, Twitter, Instagram } from "lucide-react";
+import { Home, LogOut, Facebook, Twitter, Instagram } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/lib/auth";
 import { signOut } from '@/app/(authentication)/actions';
 import { useRouter } from "next/navigation";
+import { SignOutButton } from "@/components/ui/auth-button";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,14 +69,7 @@ function Header() {
                     <span>Dashboard</span>
                   </Link>
                 </DropdownMenuItem>
-                <form action={handleSignOut} className="w-full">
-                  <button type="submit" className="flex w-full">
-                    <DropdownMenuItem className="w-full flex-1 cursor-pointer">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Sign out</span>
-                    </DropdownMenuItem>
-                  </button>
-                </form>
+                <SignOutButton />
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (

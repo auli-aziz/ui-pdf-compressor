@@ -2,11 +2,11 @@
 
 import { FcGoogle } from "react-icons/fc";
 import { signIn, signOut } from "next-auth/react";
-import { Button } from "./button";
+import { LogOut } from "lucide-react";
 
 export function GoogleSignInButton() {
-  const handleClick = () => {
-    signIn("google");
+  const handleClick = async () => {
+    await signIn("google", { callbackUrl: "/dashboard/general" });
   };
 
   return (
@@ -21,8 +21,8 @@ export function GoogleSignInButton() {
 }
 
 export function CredentialsSignInButton() {
-  const handleClick = () => {
-    signIn();
+  const handleClick = async () => {
+    await signIn();
   };
 
   return (
@@ -30,23 +30,24 @@ export function CredentialsSignInButton() {
       onClick={handleClick}
       className="w-full flex items-center font-semibold justify-center h-14 px-6 mt-4 text-xl transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
     >
-      
       <span className="ml-4">Continue with Email</span>
     </button>
   );
 }
 
 export function SignOutButton() {
-  const handleClick = () => {
-    signOut();
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/sign-in" });
   };
 
   return (
-    <Button
-      onClick={handleClick}
-      className="bg-orange-500 hover:bg-orange-600 text-white mt-3"
-    >
-      <span>Sign Out</span>
-    </Button>
+    <form action={handleSignOut} className="w-full">
+      <button type="submit" className="flex w-full">
+        <div className="w-full flex-1 cursor-pointer relative flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Sign out</span>
+        </div>
+      </button>
+    </form>
   );
 }

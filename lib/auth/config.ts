@@ -15,7 +15,13 @@ export const authConfig: NextAuthOptions = {
     signIn: '/sign-in', // Replace default sign-in page
     error: '/auth/error', // Custom error page
     verifyRequest: '/auth/verify-request', // Custom email verification page
-    newUser: '/sign-up' // New users will be directed here on first sign in (leave the property out if not of interest)
+    newUser: '/dashboard/general' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
   adapter: DrizzleAdapter(db),
+  callbacks: {
+    async session({session, user}) {
+      session.user.id = user.id;
+      return session
+    },
+  }
 };
