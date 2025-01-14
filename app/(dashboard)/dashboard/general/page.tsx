@@ -79,7 +79,7 @@ export default async function GeneralPage() {
               )}
             </Button>
           </form> */}
-          <div className="mt-5 bg-orange-500 w-fit rounded-lg">
+          <div className="mt-5 bg-orange-500 text-white w-fit rounded-lg">
             <SignOutButton />
           </div>
         </CardContent>

@@ -8,19 +8,15 @@ import {
   primaryKey,
   integer,
   serial,
-  varchar
+  varchar,
+  pgEnum
 } from "drizzle-orm/pg-core"
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js"
 import { AdapterAccount } from "next-auth/adapters";
 
-const connectionString = "postgres://postgres:postgres@localhost:5432/drizzle"
-const pool = postgres(connectionString, { max: 1 })
-
-export const db = drizzle(pool)
+export const UserRoles = pgEnum("userRole", ["USER", "ADMIN"]);
  
 // TODO: add password, role, createdAt, updatedAt, deletedAt
-export const users = pgTable("user", {
+export const user = pgTable("user", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
@@ -28,6 +24,8 @@ export const users = pgTable("user", {
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date", withTimezone: false }),
   image: text("image"),
+  password: text("text"),
+  role: UserRoles("userRole").default("USER").notNull(),
 })
  
 export const accounts = pgTable(
@@ -35,7 +33,7 @@ export const accounts = pgTable(
   {
     userId: text("userId")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccount>().notNull(),
     provider: text("provider").notNull(),
     providerAccountId: text("providerAccountId").notNull(),
@@ -60,7 +58,7 @@ export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
     .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 })
  
@@ -86,7 +84,7 @@ export const authenticators = pgTable(
     credentialID: text("credentialID").notNull().unique(),
     userId: text("userId")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => user.id, { onDelete: "cascade" }),
     providerAccountId: text("providerAccountId").notNull(),
     credentialPublicKey: text("credentialPublicKey").notNull(),
     counter: integer("counter").notNull(),
@@ -105,14 +103,14 @@ export const authenticators = pgTable(
 
 export const activityLogs = pgTable('activity_logs', {
   id: serial('id').primaryKey(),
-  userId: text('userId').references(() => users.id),
+  userId: text('userId').references(() => user.id),
   action: text('action').notNull(),
   timestamp: timestamp('timestamp').notNull().defaultNow(),
   ipAddress: varchar('ipAddress', { length: 45 }),
 });
 
-export type User = typeof users.$inferSelect;
-export type NewUser = typeof users.$inferInsert;
+export type Users = typeof user.$inferSelect;
+export type NewUsers = typeof user.$inferInsert;
 export type ActivityLog = typeof activityLogs.$inferSelect;
 export type NewActivityLog = typeof activityLogs.$inferInsert;
 

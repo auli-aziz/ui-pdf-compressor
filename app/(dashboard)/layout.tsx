@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useUser } from "@/lib/auth";
-import { signOut } from '@/app/(authentication)/actions';
 import { useRouter } from "next/navigation";
 import { SignOutButton } from "@/components/ui/auth-button";
 
@@ -20,12 +19,6 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, setUser } = useUser();
   const router = useRouter();
-
-  async function handleSignOut() {
-    setUser(null);
-    await signOut();
-    router.push("/");
-  }
 
   return (
     <header className="border-b border-gray-200">
@@ -100,7 +93,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h3 className="text-xl font-semibold text-white">About Us</h3>
               <p className="mt-4 text-sm">
-                We provide high-quality PDF compression services to help users reduce file size without sacrificing quality. Trusted by professionals and students alike.
+                We provide high-quality PDF compression services to help users
+                reduce file size without sacrificing quality. Trusted by
+                professionals and students alike.
               </p>
             </div>
 
@@ -108,10 +103,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h3 className="text-xl font-semibold text-white">Quick Links</h3>
               <ul className="mt-4 space-y-2">
-                <li><Link href="/" className="hover:underline">Home</Link></li>
-                <li><Link href="/pricing" className="hover:underline">Pricing</Link></li>
-                <li><Link href="/about" className="hover:underline">About Us</Link></li>
-                <li><Link href="#" className="hover:underline">FAQs</Link></li>
+                <li>
+                  <Link href="/" className="hover:underline">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pricing" className="hover:underline">
+                    Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" className="hover:underline">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:underline">
+                    FAQs
+                  </Link>
+                </li>
               </ul>
             </div>
 
