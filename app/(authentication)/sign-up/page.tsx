@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { CircleIcon, Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { GoogleSignInButton } from "@/components/ui/auth-button";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ export default function SignUpPage() {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [capVal, setCapVal] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,11 +39,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-[100dvh] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div className="min-h-[100dvh] flex flex-col justify-center py-3 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <CircleIcon className="h-12 w-12 text-orange-500" />
-        </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Create your account
         </h2>
@@ -128,7 +127,7 @@ export default function SignUpPage() {
             <Button
               type="submit"
               className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-              disabled={false}
+              disabled={!capVal || loading}
             >
               {loading ? (
                 <>
@@ -140,9 +139,16 @@ export default function SignUpPage() {
               )}
             </Button>
           </div>
+
+          <div className="w-full flex justify-center">
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+              onChange={(val: string) => setCapVal(val)}
+            />
+          </div>
         </form>
 
-        <div className="mt-6">
+        <div className="mt-3">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300" />
@@ -154,7 +160,7 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-3">
             <Link
               href={"/sign-in"}
               className="mb-3 w-full flex justify-center py-2 px-4 border border-gray-300 rounded-full shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"

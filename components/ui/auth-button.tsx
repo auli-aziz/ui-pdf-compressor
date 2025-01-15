@@ -37,7 +37,7 @@ export function CredentialsSignInButton() {
 
 export function SignOutButton() {
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/sign-in" });
+    await signOut();
   };
 
   return (
