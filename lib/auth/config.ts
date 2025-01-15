@@ -49,24 +49,31 @@ export const authConfig: NextAuthOptions = {
   ],
   pages: {
     signIn: '/sign-in', // Replace default sign-in page
-    error: '/auth/error', // Custom error page
     verifyRequest: '/auth/verify-request', // Custom email verification page
     newUser: '/dashboard/general' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
+  adapter: DrizzleAdapter(db),
   session: {
     strategy: "jwt",
   },
-  adapter: DrizzleAdapter(db),
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        // token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
       }
       return token;
     },
-    async session({session, user}) {
-      session.user.id = user.id;
-      return session
+    async session({ session, token, user }) {
+      if (token) {
+        session.user = {
+          id: token.id,
+          name: token.name,
+          email: token.email,
+        };
+      }
+      return session;
     },
   }
 };

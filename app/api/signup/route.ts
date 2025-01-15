@@ -15,6 +15,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if(password.length < 6) {
+      return NextResponse.json(
+        { message: "Password must be at least 6 characters." },
+        { status: 400 }
+      );
+    }
+
     // Check if user already exists
     const existingUser = await db.query.user.findFirst({
       where: eq(user.email, email),

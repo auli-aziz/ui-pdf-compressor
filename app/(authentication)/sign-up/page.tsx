@@ -13,10 +13,13 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    setLoading(true);
     const response = await fetch("/api/signup", {
       method: "POST",
       body: JSON.stringify({ email, password, name }),
@@ -25,10 +28,12 @@ export default function SignUpPage() {
 
     const data = await response.json();
     if (data.success) {
-      redirect("/dashboard/general");
+      redirect("/sign-up/success");
     } else {
-      alert(data.message || "Something went wrong.");
+      setError(data.message || "Something went wrong.");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -64,9 +69,6 @@ export default function SignUpPage() {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            {/* {state?.errors?.email && (
-              <div className="text-red-500 text-sm">{state.errors.email}</div>
-            )} */}
           </div>
 
           <div>
@@ -89,9 +91,6 @@ export default function SignUpPage() {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-            {/* {state?.errors?.name && (
-              <div className="text-red-500 text-sm">{state.errors.name}</div>
-            )} */}
           </div>
 
           <div>
@@ -107,7 +106,7 @@ export default function SignUpPage() {
                 name="password"
                 type="password"
                 autoComplete={"new-password"}
-                minLength={8}
+                minLength={6}
                 maxLength={100}
                 className="appearance-none rounded-full relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
                 placeholder="Enter your password"
@@ -115,16 +114,14 @@ export default function SignUpPage() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {/* {state?.errors?.password && (
-              <div className="text-red-500 text-sm">
-                The password must:
-                <ul className="list-disc pl-4">
-                  {state.errors.password.map((error, index) => (
-                    <li key={index}>{error}</li>
-                  ))}
-                </ul>
-              </div>
-            )} */}
+          </div>
+
+          <div>
+            {error && (
+              <p className="text-sm text-red-600" role="alert">
+                {error}
+              </p>
+            )}
           </div>
 
           <div>
@@ -133,7 +130,7 @@ export default function SignUpPage() {
               className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
               disabled={false}
             >
-              {false ? (
+              {loading ? (
                 <>
                   <Loader2 className="animate-spin mr-2 h-4 w-4" />
                   Loading...
