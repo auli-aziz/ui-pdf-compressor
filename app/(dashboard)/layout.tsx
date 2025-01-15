@@ -1,24 +1,13 @@
-"use client";
+"use server";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Home, LogOut, Facebook, Twitter, Instagram } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useUser } from "@/lib/auth";
-import { useRouter } from "next/navigation";
-import { SignOutButton } from "@/components/ui/auth-button";
+import { Facebook, Twitter, Instagram } from "lucide-react";
+import DropdownMenuComponent from "@/components/fragments/dropdown-menu";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/lib/auth/config";
 
-function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, setUser } = useUser();
-  const router = useRouter();
+async function Header() {
+  const session = await getServerSession(authConfig);
 
   return (
     <header className="border-b border-gray-200">
@@ -42,44 +31,14 @@ function Header() {
           >
             Pricing
           </Link>
-          {user ? (
-            <DropdownMenu open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer size-9">
-                  <AvatarImage alt={user.name || ""} />
-                  <AvatarFallback>
-                    {user.email
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="flex flex-col gap-1">
-                <DropdownMenuItem className="cursor-pointer">
-                  <Link href="/dashboard" className="flex w-full items-center">
-                    <Home className="mr-2 h-4 w-4" />
-                    <span>Dashboard</span>
-                  </Link>
-                </DropdownMenuItem>
-                <SignOutButton />
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button
-              asChild
-              className="bg-black hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-full"
-            >
-              <Link href="/sign-in">Sign In</Link>
-            </Button>
-          )}
+          <DropdownMenuComponent session={session} />
         </div>
       </div>
     </header>
   );
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <section className="flex flex-col">
