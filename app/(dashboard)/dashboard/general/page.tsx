@@ -21,9 +21,6 @@ export default async function GeneralPage() {
           <div>
             <Label htmlFor="name">Name</Label>
             <Input
-              id="name"
-              name="name"
-              placeholder="Enter your name"
               defaultValue={session?.user?.name || ""}
               disabled
             />
@@ -31,11 +28,14 @@ export default async function GeneralPage() {
           <div>
             <Label htmlFor="email">Email</Label>
             <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Enter your email"
               defaultValue={session?.user?.email || ""}
+              disabled
+            />
+          </div>
+          <div>
+            <Label htmlFor="email">Email Verified</Label>
+            <Input
+              defaultValue={session?.user?.emailVerified || "Not Verified"}
               disabled
             />
           </div>
