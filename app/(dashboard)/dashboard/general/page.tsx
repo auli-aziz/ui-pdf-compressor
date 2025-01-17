@@ -8,6 +8,12 @@ import { SignOutButton } from "@/components/ui/auth-button";
 export default async function GeneralPage() {
   const session = await getServerSession(authConfig);
 
+  const emailVerifiedISO =
+    session?.user?.emailVerified?.replace(" ", "T") + "Z";
+  const emailVerified = emailVerifiedISO
+    ? new Date(emailVerifiedISO).toLocaleString()
+    : "Not Verified";
+
   return (
     <section className="flex-1 p-4 lg:p-8">
       <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
@@ -20,24 +26,15 @@ export default async function GeneralPage() {
         <CardContent>
           <div>
             <Label htmlFor="name">Name</Label>
-            <Input
-              defaultValue={session?.user?.name || ""}
-              disabled
-            />
+            <Input defaultValue={session?.user?.name || ""} disabled />
           </div>
           <div>
             <Label htmlFor="email">Email</Label>
-            <Input
-              defaultValue={session?.user?.email || ""}
-              disabled
-            />
+            <Input defaultValue={session?.user?.email || ""} disabled />
           </div>
           <div>
-            <Label htmlFor="email">Email Verified</Label>
-            <Input
-              defaultValue={session?.user?.emailVerified || "Not Verified"}
-              disabled
-            />
+            <Label htmlFor="emailVerified">Email Verified</Label>
+            <Input defaultValue={emailVerified} disabled />
           </div>
           <div className="mt-5 bg-orange-500 text-white w-fit rounded-lg">
             <SignOutButton />

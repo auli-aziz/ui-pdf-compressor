@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+
 import { db } from "@/lib/db";
 import { user } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+
+import { getVerificationToken } from "@/lib/email/verify";
+import { sendEmail } from "@/lib/email/send";
+import { verficationEmailTemplate } from "@/lib/email/template";
 
 export async function POST(request: Request) {
   try {
@@ -34,13 +39,23 @@ export async function POST(request: Request) {
       );
     }
 
+    // verify email
+    const {verificationToken, verifyToken, verifyTokenExpires} = getVerificationToken();
+
     // Hash password and create user
     const hashedPassword = await bcrypt.hash(password, 10);
     await db.insert(user).values({
       name,
       email,
+      verifyToken,
+      verifyTokenExpires,
       password: hashedPassword,
     });
+
+    const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify-email?verifyToken=${verificationToken}&email=${email}`;
+    const payload = verficationEmailTemplate(verificationLink);
+
+    await sendEmail(email, "Verify your email", payload);
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

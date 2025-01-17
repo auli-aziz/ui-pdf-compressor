@@ -23,6 +23,8 @@ export const user = pgTable("user", {
   name: text("name"),
   email: text("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date", withTimezone: false }),
+  verifyToken: text("verifyToken"),
+  verifyTokenExpires: timestamp("verifyTokenExpires", { mode: "date", withTimezone: false }),
   image: text("image"),
   password: text("password"),
   role: UserRoles("userRole").default("USER").notNull(),

@@ -9,7 +9,7 @@ export default function SignUpSuccessPage() {
           You have successfully Signed Up.
         </p>
         <p className="text-gray-500 mb-4">
-          Please check your email to verify.
+          Verification email will expire in 30 minutes. Please check your email to verify.
         </p>
         <a 
           href="/sign-in"
