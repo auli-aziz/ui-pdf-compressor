@@ -11,9 +11,6 @@ export async function GET(request: Request) {
     const verifyToken = searchParams.get("verifyToken") as string;
     const email = searchParams.get("email");
 
-    console.log("Verifying email:", email);
-    console.log("Verifying token:", verifyToken);
-
     if (!verifyToken || !email) {
       return NextResponse.json(
         { message: "Missing required parameters." },
@@ -22,7 +19,6 @@ export async function GET(request: Request) {
     }
 
     const tokenHash = crypto.createHash("sha256").update(verifyToken).digest("hex");
-    console.log("Token hash:", tokenHash);
 
     const existingUser = await db.query.user.findFirst({
       where: and(
@@ -38,8 +34,6 @@ export async function GET(request: Request) {
         { status: 400 }
       );
     }
-
-    console.log("User found:", existingUser);
 
     await db.update(user)
       .set({

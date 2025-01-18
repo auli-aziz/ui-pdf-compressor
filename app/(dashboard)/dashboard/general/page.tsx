@@ -4,14 +4,21 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { SignOutButton } from "@/components/ui/auth-button";
+import VerifyEmailButton from "@/components/ui/verify-email-button";
 
 export default async function GeneralPage() {
   const session = await getServerSession(authConfig);
 
-  const emailVerifiedISO =
-    session?.user?.emailVerified?.replace(" ", "T") + "Z";
-  const emailVerified = emailVerifiedISO
-    ? new Date(emailVerifiedISO).toLocaleString()
+  console.log(session);
+
+  const emailVerified = session?.user?.emailVerified
+    ? new Date(session.user.emailVerified).toLocaleString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
     : "Not Verified";
 
   return (
@@ -26,15 +33,32 @@ export default async function GeneralPage() {
         <CardContent>
           <div>
             <Label htmlFor="name">Name</Label>
-            <Input defaultValue={session?.user?.name || ""} disabled />
+            <Input
+              defaultValue={session?.user?.name || ""}
+              disabled
+              className="border-gray-400"
+            />
           </div>
           <div>
             <Label htmlFor="email">Email</Label>
-            <Input defaultValue={session?.user?.email || ""} disabled />
+            <Input
+              defaultValue={session?.user?.email || ""}
+              disabled
+              className="border-gray-400"
+            />
           </div>
           <div>
             <Label htmlFor="emailVerified">Email Verified</Label>
-            <Input defaultValue={emailVerified} disabled />
+            <div className="flex items-center gap-2">
+              <Input
+                defaultValue={emailVerified}
+                disabled
+                className="border-gray-400"
+              />
+              {!session?.user?.emailVerified && (
+                <VerifyEmailButton email={session?.user?.email!} />
+              )}
+            </div>
           </div>
           <div className="mt-5 bg-orange-500 text-white w-fit rounded-lg">
             <SignOutButton />

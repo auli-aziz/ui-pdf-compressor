@@ -169,7 +169,7 @@ export default function SignUpPage() {
             </Link>
           </div>
 
-          <GoogleSignInButton />
+          <GoogleSignInButton disabled={!capVal} />
         </div>
       </div>
     </div>

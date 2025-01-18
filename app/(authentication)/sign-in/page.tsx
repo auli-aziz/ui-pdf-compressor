@@ -139,7 +139,7 @@ export default function SignInPage() {
             </Link>
           </div>
 
-          <GoogleSignInButton />
+          <GoogleSignInButton disabled={!capVal} />
         </div>
       </div>
     </div>

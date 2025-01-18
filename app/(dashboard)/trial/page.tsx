@@ -127,7 +127,7 @@ export default function TrialPage() {
             <p className="text-gray-700">
               Compression Percentage: <span className="font-semibold">{compressionData.compressionPercent}%</span>
             </p>
-            <Button className="mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
+            <Button className="mt-4 px-4 py-2 bg-green-600 text-white font-semibold rounded-lg">
               Download Compressed PDF
             </Button>
           </div>

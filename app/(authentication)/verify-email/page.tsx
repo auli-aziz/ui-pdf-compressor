@@ -71,7 +71,7 @@ export default function VerifyEmailPage() {
             </p>
             <a
               href="/"
-              className="bg-orange-600 text-white py-2 px-4 rounded-md text-sm sm:text-base inline-block transition duration-200 hover:bg-green-600"
+              className="bg-orange-600 text-white py-2 px-4 rounded-md text-sm sm:text-base inline-block transition duration-200"
             >
               Go to Home
             </a>

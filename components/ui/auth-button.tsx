@@ -4,7 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import { signIn, signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 
-export function GoogleSignInButton() {
+export function GoogleSignInButton({ disabled }: { disabled?: boolean }) {
   const handleClick = async () => {
     await signIn("google", { callbackUrl: "/dashboard/general" });
   };
@@ -12,6 +12,7 @@ export function GoogleSignInButton() {
   return (
     <button
       onClick={handleClick}
+      disabled={disabled}
       className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-full shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
     >
       <FcGoogle className="w-[20px] h-[20px]" />

@@ -43,7 +43,7 @@ export const authConfig: NextAuthOptions = {
         }
 
         // 3. Return user object
-        return { id: existingUser.id, name: existingUser.name, email, role: existingUser.role };
+        return { id: existingUser.id, name: existingUser.name, email, role: existingUser.role, emailVerified: existingUser.emailVerified};
       },
     }),
   ],
@@ -62,11 +62,9 @@ export const authConfig: NextAuthOptions = {
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-      } 
-
-      if(user?.role) {
+        token.emailVerified = user.emailVerified;
         token.role = user.role;
-      }
+      } 
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
@@ -75,10 +73,12 @@ export const authConfig: NextAuthOptions = {
           id: token.id,
           name: token.name,
           email: token.email,
+          emailVerified: token.emailVerified ? new Date(token.emailVerified).toISOString() : null,
           role: token.role,
         };
       }
       return session;
-    },
+    }
+    
   }
 };
