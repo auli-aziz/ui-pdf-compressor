@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 dotenv.config();
 import {
   boolean,
@@ -9,12 +9,12 @@ import {
   integer,
   serial,
   varchar,
-  pgEnum
-} from "drizzle-orm/pg-core"
+  pgEnum,
+} from "drizzle-orm/pg-core";
 import { AdapterAccount } from "next-auth/adapters";
 
 export const UserRoles = pgEnum("userRole", ["USER", "ADMIN"]);
- 
+
 // TODO: add password, role, createdAt, updatedAt, deletedAt
 export const user = pgTable("user", {
   id: text("id")
@@ -22,14 +22,20 @@ export const user = pgTable("user", {
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name"),
   email: text("email").unique(),
-  emailVerified: timestamp("emailVerified", { mode: "date", withTimezone: false }),
+  emailVerified: timestamp("emailVerified", {
+    mode: "date",
+    withTimezone: false,
+  }),
   verifyToken: text("verifyToken"),
-  verifyTokenExpires: timestamp("verifyTokenExpires", { mode: "date", withTimezone: false }),
+  verifyTokenExpires: timestamp("verifyTokenExpires", {
+    mode: "date",
+    withTimezone: false,
+  }),
   image: text("image"),
   password: text("password"),
   role: UserRoles("userRole").default("USER").notNull(),
-})
- 
+});
+
 export const accounts = pgTable(
   "account",
   {
@@ -54,16 +60,16 @@ export const accounts = pgTable(
       }),
     },
   ]
-)
- 
+);
+
 export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
-})
- 
+});
+
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -78,8 +84,8 @@ export const verificationTokens = pgTable(
       }),
     },
   ]
-)
- 
+);
+
 export const authenticators = pgTable(
   "authenticator",
   {
@@ -101,14 +107,25 @@ export const authenticators = pgTable(
       }),
     },
   ]
-)
+);
 
-export const activityLogs = pgTable('activity_logs', {
-  id: serial('id').primaryKey(),
-  userId: text('userId').references(() => user.id),
-  action: text('action').notNull(),
-  timestamp: timestamp('timestamp').notNull().defaultNow(),
-  ipAddress: varchar('ipAddress', { length: 45 }),
+export const orders = pgTable("orders", {
+  id: serial("id").primaryKey(),
+  userId: text("userId").references(() => user.id, { onDelete: "cascade" }),
+  orderId: text("orderId").notNull().unique(), 
+  plan: text("plan").notNull(), 
+  price: integer("price").notNull(), 
+  status: text("status").default("PENDING").notNull(), 
+  createdAt: timestamp("createdAt").defaultNow(),
+  expiresAt: timestamp("expiresAt"),
+});
+
+export const activityLogs = pgTable("activity_logs", {
+  id: serial("id").primaryKey(),
+  userId: text("userId").references(() => user.id),
+  action: text("action").notNull(),
+  timestamp: timestamp("timestamp").notNull().defaultNow(),
+  ipAddress: varchar("ipAddress", { length: 45 }),
 });
 
 export type Users = typeof user.$inferSelect;
@@ -117,11 +134,11 @@ export type ActivityLog = typeof activityLogs.$inferSelect;
 export type NewActivityLog = typeof activityLogs.$inferInsert;
 
 export enum ActivityType {
-  SIGN_UP = 'SIGN_UP',
-  SIGN_IN = 'SIGN_IN',
-  SIGN_OUT = 'SIGN_OUT',
-  UPDATE_PASSWORD = 'UPDATE_PASSWORD',
-  DELETE_ACCOUNT = 'DELETE_ACCOUNT',
-  UPDATE_ACCOUNT = 'UPDATE_ACCOUNT',
-  COMPRESS_PDF = 'COMPRESS_PDF',
+  SIGN_UP = "SIGN_UP",
+  SIGN_IN = "SIGN_IN",
+  SIGN_OUT = "SIGN_OUT",
+  UPDATE_PASSWORD = "UPDATE_PASSWORD",
+  DELETE_ACCOUNT = "DELETE_ACCOUNT",
+  UPDATE_ACCOUNT = "UPDATE_ACCOUNT",
+  COMPRESS_PDF = "COMPRESS_PDF",
 }

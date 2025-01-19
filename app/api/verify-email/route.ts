@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const verifyToken = searchParams.get("verifyToken") as string;
-    const email = searchParams.get("email");
+    const email = searchParams.get("email") as string;
 
     if (!verifyToken || !email) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
         verifyToken: null,
         verifyTokenExpires: null,
       })
-      .where(eq(user.id, existingUser.id)); // Update using the user's ID
+      .where(eq(user.id, existingUser.id));
 
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {

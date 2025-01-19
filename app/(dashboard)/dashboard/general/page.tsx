@@ -5,11 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { SignOutButton } from "@/components/ui/auth-button";
 import VerifyEmailButton from "@/components/ui/verify-email-button";
+import Subscription from "./subscription";
 
 export default async function GeneralPage() {
   const session = await getServerSession(authConfig);
-
-  console.log(session);
 
   const emailVerified = session?.user?.emailVerified
     ? new Date(session.user.emailVerified).toLocaleString(undefined, {
@@ -22,7 +21,7 @@ export default async function GeneralPage() {
     : "Not Verified";
 
   return (
-    <section className="flex-1 p-4 lg:p-8">
+    <section className="flex-1 flex flex-col gap-2 p-4 lg:p-8">
       <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
         General Settings
       </h1>
@@ -65,6 +64,7 @@ export default async function GeneralPage() {
           </div>
         </CardContent>
       </Card>
+      <Subscription email={session?.user?.email!} />
     </section>
   );
 }
