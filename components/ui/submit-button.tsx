@@ -2,22 +2,16 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
 // import { useFormStatus } from 'react-dom';
 
 export function SubmitButton() {
   // const { pending } = useFormStatus();
 
-  const handleClick = () => {
-    redirect("/payment/pin");
-  };
-
   return (
     <Button
-      type="button"
-      onClick={handleClick}
+      type="submit"
       disabled={false}
-      className="w-full bg-gray-900 hover:bg-gray-800 text-white border border-gray-200 rounded-full flex items-center justify-center"
+      className="w-full bg-white hover:bg-gray-100 text-black border border-gray-200 rounded-full flex items-center justify-center"
     >
       {false ? (
         <>
