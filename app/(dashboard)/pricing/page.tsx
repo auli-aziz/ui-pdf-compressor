@@ -14,7 +14,7 @@ export default async function PricingPage() {
           name={'Base'}
           price={basePrice.toLocaleString('id-ID')}
           interval={'bulan'}
-          trialDays={7}
+          description={"Layanan terjamin"}
           features={[
             'Penggunaan Tanpa Batas',
             'Dukungan via Email',
@@ -26,7 +26,7 @@ export default async function PricingPage() {
           name={'Plus'}
           price={plusPrice.toLocaleString('id-ID')}
           interval={'bulan'}
-          trialDays={7}
+          description={"Layanan terjamin"}
           features={[
             'Semua yang ada dalam Base',
             'Early Access ke fitur baru',

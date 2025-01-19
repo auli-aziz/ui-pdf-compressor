@@ -9,7 +9,7 @@ export default function PricingCard({
   name,
   price,
   interval,
-  trialDays = 7,
+  description,
   features,
   username,
   email,
@@ -18,8 +18,8 @@ export default function PricingCard({
   name: string;
   price: string;
   interval: string;
-  trialDays: number;
   features: string[];
+  description?: string | null;
   username?: string | null;
   email?: string | null;
   showBtn?: boolean | null;
@@ -71,7 +71,7 @@ export default function PricingCard({
     <div className="w-fit py-6 shadow-md px-7 rounded-lg">
       <h2 className="text-2xl font-medium text-gray-900 mb-2">{name}</h2>
       <p className="text-sm text-gray-600 mb-4">
-      dengan free trial selama {trialDays} hari
+        {description ? description : 'Penggunaan tanpa batas'}{' '}
       </p>
       <p className="text-4xl font-medium text-gray-900 mb-6">
         Rp{price}{' '}

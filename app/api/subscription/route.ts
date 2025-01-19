@@ -46,7 +46,7 @@ export async function GET(request: Request) {
 
     // Respond with the subscription plan
     return NextResponse.json(
-      { plan: existingOrder.plan },
+      { plan: existingOrder.plan, expireDate: existingOrder.expiresAt },
       { status: 200 }
     );
   } catch (error) {

@@ -2,12 +2,13 @@
 
 import PricingCard from "@/components/fragments/pricing-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Subscription({ email }: { email: string }) {
   const [subscriptionPlan, setSubscriptionPlan] = useState<string | null>(null);
+  const [expires, setExpires] = useState<string | null>(null);
+
   async function fetchSubscription() {
     const response = await fetch(`/api/subscription?email=${email}`, {
       method: "GET",
@@ -21,6 +22,7 @@ export default function Subscription({ email }: { email: string }) {
     
     if(response.ok) {
       setSubscriptionPlan(subscription.plan);
+      setExpires(subscription.expireDate);
     }
   }
   useEffect(() => {
@@ -38,13 +40,18 @@ export default function Subscription({ email }: { email: string }) {
               name={subscriptionPlan}
               price={subscriptionPlan === 'Base' ? '100,000' : '200,000'}
               interval={'bulan'}
-              trialDays={7}
+              description={`Berlaku hingga ${new Date(expires).toLocaleString(undefined, {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}`}
               features={
                 subscriptionPlan === 'Base'
                   ? ['Penggunaan Tanpa Batas', 'Dukungan via Email']
                   : ['Semua yang ada dalam Base', 'Early Access ke fitur baru', 'Dukungan 24/7']
               }
               showBtn={false}
+
             />
           ) : (
             <div className="flex flex-col items-center justify-center gap-4 p-4">
