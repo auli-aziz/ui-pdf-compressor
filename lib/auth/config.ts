@@ -1,19 +1,21 @@
 import { NextAuthOptions } from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { db } from "../db/"
-import CredentialsProvider from "next-auth/providers/credentials";
 import { user } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
-
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
+// konfigurasi autentikasi next auth
 export const authConfig: NextAuthOptions = {
   providers: [
+    // sign in dengan google
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
+    // sign in manual dengan email dan password
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -49,10 +51,9 @@ export const authConfig: NextAuthOptions = {
   ],
   pages: {
     signIn: '/sign-in', // Replace default sign-in page
-    verifyRequest: '/auth/verify-request', // Custom email verification page
     newUser: '/dashboard/general' // New users will be directed here on first sign in (leave the property out if not of interest)
   },
-  adapter: DrizzleAdapter(db),
+  adapter: DrizzleAdapter(db), // adapter untuk drizzle
   session: {
     strategy: "jwt",
   },

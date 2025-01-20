@@ -20,9 +20,9 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setLoading(true);
-    const response = await fetch("/api/signup", {
+    // memanggil API untuk signup (tanpa google)
+    const response = await fetch("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({ email, password, name }),
       headers: { "Content-Type": "application/json" },

@@ -9,8 +9,10 @@ import { getVerificationToken } from "@/lib/email/verify";
 import { sendEmail } from "@/lib/email/send";
 import { verficationEmailTemplate } from "@/lib/email/template";
 
+// POST /api/auth/signup
 export async function POST(request: Request) {
   try {
+    // Parse request body
     const { name, email, password } = await request.json();
 
     if (!name || !email || !password) {
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if user already exists
+    // Check jika user dengan email tsb sudah ada dalam database
     const existingUser = await db.query.user.findFirst({
       where: eq(user.email, email),
     });
@@ -39,10 +41,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // verify email
+    // verify email dengan memanggil fungsi getVerificationToken untuk mendapatkan token dan expired date
     const {verificationToken, verifyToken, verifyTokenExpires} = getVerificationToken();
 
-    // Hash password and create user
+    // Hash password and create user dengan memasukkan name, email, verifyToken, verifyTokenExpires, dan hashed password
     const hashedPassword = await bcrypt.hash(password, 10);
     await db.insert(user).values({
       name,
@@ -52,9 +54,12 @@ export async function POST(request: Request) {
       password: hashedPassword,
     });
 
+    // Membuat link verifikasi email
     const verificationLink = `${process.env.NEXT_PUBLIC_URL}/verify-email?verifyToken=${verificationToken}&email=${email}`;
+    // Membuat payload email dengan memanggil fungsi yang memberikan template email
     const payload = verficationEmailTemplate(verificationLink);
 
+    // Mengirim email verifikasi dengan argument email, subject, dan payload
     await sendEmail(email, "Verify your email", payload);
 
     return NextResponse.json({ success: true }, { status: 200 });

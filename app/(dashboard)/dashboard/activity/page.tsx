@@ -7,7 +7,6 @@ import {
   UserCog,
   AlertCircle,
   UserMinus,
-  Mail,
   CheckCircle,
   type LucideIcon,
 } from "lucide-react";

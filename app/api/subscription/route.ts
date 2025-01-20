@@ -3,8 +3,10 @@ import { db } from "@/lib/db";
 import { orders, user } from "@/lib/db/schema";
 import { and, eq, gt } from "drizzle-orm";
 
+// GET /api/subscription api untuk mengecek status subscription user
 export async function GET(request: Request) {
   try {
+    // Mengambil email dari query params
     const { searchParams } = new URL(request.url);
     const email = searchParams.get("email");
 
@@ -15,11 +17,9 @@ export async function GET(request: Request) {
       );
     }
 
-    // Query to find the user
     const existingUser = await db.query.user.findFirst({
       where: eq(user.email, email),
     });
-    console.log("existingUser: ", existingUser);
 
     if (!existingUser) {
       return NextResponse.json(
@@ -44,7 +44,7 @@ export async function GET(request: Request) {
       );
     }
 
-    // Respond with the subscription plan
+    // Respond with the subscription plan & expiration date
     return NextResponse.json(
       { plan: existingOrder.plan, expireDate: existingOrder.expiresAt },
       { status: 200 }

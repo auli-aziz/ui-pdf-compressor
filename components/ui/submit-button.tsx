@@ -2,10 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader2 } from 'lucide-react';
-// import { useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 
 export function SubmitButton() {
-  // const { pending } = useFormStatus();
+  const { pending } = useFormStatus();
 
   return (
     <Button
@@ -13,7 +13,7 @@ export function SubmitButton() {
       disabled={false}
       className="w-full bg-white hover:bg-gray-100 text-black border border-gray-200 rounded-full flex items-center justify-center"
     >
-      {false ? (
+      {pending ? (
         <>
           <Loader2 className="animate-spin mr-2 h-4 w-4" />
           Loading...

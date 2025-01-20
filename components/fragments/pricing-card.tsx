@@ -25,6 +25,7 @@ export default function PricingCard({
   showBtn?: boolean | null;
 }) {
   useEffect(() => {
+    // Load Snap.js script (Popup for Midtrans)
     const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
     const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
 
@@ -47,6 +48,7 @@ export default function PricingCard({
     }  
 
     try{
+      // Call API to get Snap.js token
       const response = await fetch('/api/payment/tokenizer', {
         method: 'POST',
         body: JSON.stringify({

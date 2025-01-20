@@ -10,6 +10,7 @@ export default function Subscription({ email }: { email: string }) {
   const [expires, setExpires] = useState<string | null>(null);
 
   async function fetchSubscription() {
+    // memanggil API untuk mendapatkan subscription plan berdasarkan email
     const response = await fetch(`/api/subscription?email=${email}`, {
       method: "GET",
       headers: {
@@ -18,7 +19,6 @@ export default function Subscription({ email }: { email: string }) {
     });
 
     const subscription = await response.json();
-    console.log("sub response: ", subscription);
     
     if(response.ok) {
       setSubscriptionPlan(subscription.plan);

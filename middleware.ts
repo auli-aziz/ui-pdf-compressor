@@ -5,12 +5,12 @@ export async function middleware(req: any) {
   const token = await getToken({ req });
   const url = req.nextUrl;
 
-  // Prevent authenticated users from accessing the sign-in page
+  // menghindari pengguna terautentikasi dari mengakses halaman sign-in
   if (url.pathname === "/sign-in" && token) {
     return NextResponse.redirect(new URL("/dashboard", req.url)); // Redirect authenticated users to the dashboard
   }
 
-  // Redirect to sign-in if no token is present and accessing protected routes
+  // Redirect ke sign-in jika pengguna tidak terautentikasi
   if (!token && !url.pathname.startsWith("/sign-in")) {
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
@@ -20,10 +20,10 @@ export async function middleware(req: any) {
     return NextResponse.redirect(new URL("/unauthorized", req.url));
   }
 
-  // Allow the request to proceed
   return NextResponse.next();
 }
 
+// route yang terproteksi
 export const config = {
-  matcher: ["/dashboard/:path*", "/dashboard", "/admin/:path*", "/sign-in"], // Protect routes
+  matcher: ["/dashboard/:path*", "/dashboard", "/admin/:path*", "/sign-in"], 
 };

@@ -15,7 +15,6 @@ import { AdapterAccount } from "next-auth/adapters";
 
 export const UserRoles = pgEnum("userRole", ["USER", "ADMIN"]);
 
-// TODO: add password, role, createdAt, updatedAt, deletedAt
 export const user = pgTable("user", {
   id: text("id")
     .primaryKey()

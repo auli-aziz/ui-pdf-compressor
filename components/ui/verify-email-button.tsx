@@ -10,7 +10,8 @@ export default function VerifyEmailButton({ email }: { email: string }) {
       if (!email) {
         alert("Email is required.");
       }
-      const response = await fetch("/api/add-token", {
+      // memanggil API untuk mengirim email verifikasi
+      const response = await fetch("/api/email/add-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

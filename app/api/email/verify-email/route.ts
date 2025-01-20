@@ -5,9 +5,11 @@ import { db } from "@/lib/db";
 import { user } from "@/lib/db/schema";
 import { and, eq, gt } from "drizzle-orm";
 
+// GET /api/email/verify-email untuk memverifikasi email
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    // Mengambil verifyToken dan email dari query params
     const verifyToken = searchParams.get("verifyToken") as string;
     const email = searchParams.get("email") as string;
 
@@ -18,8 +20,10 @@ export async function GET(request: Request) {
       );
     }
 
+    // Hash verfiyToken untuk menyesuaikan dengan yang ada di database
     const tokenHash = crypto.createHash("sha256").update(verifyToken).digest("hex");
 
+    // Mencari user dengan email dan verifyToken yang sama dan dan belum expired
     const existingUser = await db.query.user.findFirst({
       where: and(
         eq(user.email, email),
@@ -35,6 +39,7 @@ export async function GET(request: Request) {
       );
     }
 
+    // Update user dengan menghapus verifyToken dan verifyTokenExpires dan mengupdate emailVerified
     await db.update(user)
       .set({
         emailVerified: new Date(),

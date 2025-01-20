@@ -21,8 +21,9 @@ export default function VerifyEmailPage() {
     const verifyEmail = async () => {
       try {
         setLoading(true);
+        // memanggil API untuk verifikasi email (menjadikan email verified)
         const response = await fetch(
-          `/api/verify-email?verifyToken=${verifyToken}&email=${email}`,
+          `/api/email/verify-email?verifyToken=${verifyToken}&email=${email}`,
           {
             method: "GET",
             headers: {
